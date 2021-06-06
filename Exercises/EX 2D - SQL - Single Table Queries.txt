@@ -1,0 +1,19 @@
+--Exercise 5
+--select empid, lastname
+--from hr.Employees
+--where lastname collate Latin1_General_CS_AS like N'[abcdefghijklmnopqrstuvwxyz]%';
+
+--Exercise 6
+--select empid, count(*) AS numorders
+--from sales.orders
+--where orderdate < '20160501'
+--group by empid
+
+--select empid, count(*) AS numorders
+--from sales.orders
+--group by empid
+--having max(orderdate) < '20160501'
+
+--The difference between these two searches is the use of the WHERE and HAVING filters. In the first search WHERE filters by rows, so what we are seeing
+--in the output is the total number of orders each employee handled before 20160501. The HAVING statement filters by group, so what we are seeing in the
+--output are the employees that haven't processed any orders since 20160501. 

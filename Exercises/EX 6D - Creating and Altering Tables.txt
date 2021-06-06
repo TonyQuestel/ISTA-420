@@ -1,0 +1,293 @@
+--drop table if exists Customers; 
+--create table Customers (
+--	customerNumber nvarchar(10) primary key,
+--	customerName nvarchar(50),
+--	contactLastName nvarchar(35),
+--	contactFirstName nvarchar(35),
+--	phone nvarchar(20),
+--	addressLine1 nvarchar(50),
+--	addressLine2 nvarchar(50),
+--	city nvarchar(25),
+--	stateOfResidency nvarchar(25),
+--	postalCode nvarchar(15),
+--	country nvarchar(25),
+--	salesRepEmployeeNumber nvarchar(10),
+--	creditLimit money);
+
+--drop table if exists Employees;
+--create table Employees (
+--	employeeNumber nvarchar(10) not null primary key,
+--	lastName nvarchar(35),
+--	firstName nvarchar(35),
+--	extenstion nvarchar(10),
+--	email nvarchar(50),
+--	officeCode nvarchar(10),
+--	reportsto nvarchar(10),
+--	jobTitle nvarchar (50));
+
+--drop table if exists Offices; 
+--create table Offices (
+--	OfficeCode nvarchar(10) primary key,
+--	city nvarchar(25),
+--	phone nvarchar(20),
+--	addressLine1 nvarchar(35),
+--	addressLine2 nvarchar(20),
+--	stateOfResidency nvarchar(25),
+--	country nvarchar(25),
+--	postalcode nvarchar(15),
+--	territory nvarchar(15));
+
+--drop table if exists OrderDetails;
+--create table OrderDetails (
+--	 orderNumber nvarchar(10), 
+--	 productCode nvarchar(10), 
+--	 quantityOrdered nvarchar(10), 
+--	 priceEach money, 
+--	 orderLineNumber nvarchar(10)); 
+
+--drop table if exists Orders 
+--create table Orders (
+--	OrderNumber nvarchar(10) primary key, 
+--	orderDate nvarchar(max), 
+--	requiredDate nvarchar(max), 
+--	shippedDate nvarchar(max), 
+--	orderStatus nvarchar(50),
+--	comments nvarchar(max), 
+--	customerNumber nvarchar(10));
+
+--drop table if exists Payments;
+--create table Payments (
+--	customerNumber nvarchar(10), 
+--	checkNumber nvarchar(50) primary key,
+--	paymentDate datetime, 
+--	amount money); 
+
+--drop table if exists Products; 
+--create table Products (
+--	productCode nvarchar(10) primary key,
+--	productName nvarchar(80),
+--	productLine nvarchar(50),
+--	productScale nvarchar(50),
+--	productVendor nvarchar(50),
+--	productDescription nvarchar(max),
+--	quantityInStock nvarchar(10), 
+--	buyPrice money, 
+--	MSRP money);
+
+--drop table if exists productLines;
+--create table productLines (
+--	productLine nvarchar(50) primary key,
+--	textDescription nvarchar(max),
+--	htmlDescription nvarchar(max),
+--	picture varchar(max));
+
+--alter table Products
+--add foreign key (productLine) references productLines(productLine);
+
+--alter table orderDetails
+--add foreign key (productCode) references products(productCode);
+
+--alter table orderDetails
+--add foreign key (orderNumber) references orders(orderNumber);
+
+--alter table employees
+--add foreign key (officeCode) references offices(officeCode);
+
+--alter table customers
+--add foreign key (salesRepEmployeeNumber) references employees(employeeNumber);
+
+--alter table orders
+--add foreign key (customerNumber) references customers(customerNumber);
+
+--alter table payments
+--add foreign key (customerNumber) references customers(customerNumber);
+
+--alter table employees
+--add foreign key (reportsTo) references employees(employeeNumber);
+
+--bulk insert Customers from 'C:\Users\Doomh\Desktop\College\MSSA\Exercises\Exercise_6_CSV\Customers.csv'
+--with 
+--(
+--	datafiletype = 'char',
+--	fieldterminator = ',',
+--	rowterminator = '\n'
+--);
+--bulk insert Employees from 'C:\Users\Doomh\Desktop\College\MSSA\Exercises\Exercise_6_CSV\Employees.csv'
+--with 
+--(
+--	datafiletype = 'char',
+--	fieldterminator = ',',
+--	rowterminator = '\n'
+--);
+--bulk insert Offices from 'C:\Users\Doomh\Desktop\College\MSSA\Exercises\Exercise_6_CSV\Offices.csv'
+--with 
+--(
+--	datafiletype = 'char',
+--	fieldterminator = ',',
+--	rowterminator = '\n'
+--);
+--bulk insert OrderDetails from 'C:\Users\Doomh\Desktop\College\MSSA\Exercises\Exercise_6_CSV\OrderDetails.csv'
+--with 
+--(
+--	datafiletype = 'char',
+--	fieldterminator = ',',
+--	rowterminator = '\n'
+--);
+--bulk insert Orders from 'C:\Users\Doomh\Desktop\College\MSSA\Exercises\Exercise_6_CSV\Orders.csv'
+--with 
+--(
+--	datafiletype = 'char',
+--	fieldterminator = ',',
+--	rowterminator = '\n'
+--);
+--bulk insert Payments from 'C:\Users\Doomh\Desktop\College\MSSA\Exercises\Exercise_6_CSV\Payments.csv'
+--with 
+--(
+--	datafiletype = 'char',
+--	fieldterminator = ',',
+--	rowterminator = '\n'
+--);
+--bulk insert ProductLines from 'C:\Users\Doomh\Desktop\College\MSSA\Exercises\Exercise_6_CSV\ProductLines.csv'
+--with 
+--(
+--	datafiletype = 'char',
+--	fieldterminator = ',',
+--	rowterminator = '\n'
+--);
+--bulk insert Products from 'C:\Users\Doomh\Desktop\College\MSSA\Exercises\Exercise_6_CSV\Products.csv'
+--with 
+--(
+--	datafiletype = 'char',
+--	fieldterminator = ',',
+--	rowterminator = '\n'
+--);
+
+--3a) How many distinct products does ClassicModels sell?
+--SELECT COUNT(DISTINCT p.productName) as DistinctProducts
+--FROM dbo.Products p
+
+--3b) Report the name and city of customers who don't have sales representatives?
+--SELECT c.customerNumber,c.city
+--FROM dbo.Customers c
+--WHERE c.salesRepEmployeeNumber is NULL;
+
+--3c) What are the names of executives with VP or Manager in their title? Use the CONCAT function to combine 
+--    the employee's first name and last name into a single field for reporting.
+--SELECT e.firstName + ' ' + e.lastName as Employee, e.jobTitle
+--FROM dbo.Employees e
+--WHERE e.jobTitle like '%VP%' OR e.jobTitle like '%Manager%'
+--ORDER BY Employee;
+
+--3d) Which orders have a value greater than $5,000?
+--SELECT od.orderNumber, SUM((od.quantityOrdered * od.priceEach)) as SalePrice 
+--FROM dbo.OrderDetails od
+--WHERE (od.quantityOrdered * od.priceEach) > 5000
+--GROUP BY od.orderNumber
+--ORDER BY SalePrice desc;
+
+--3e) Report the account representative for each customer
+--SELECT c.customerName, e.firstName + ' ' + e.lastName as Account_Respresentative
+--FROM dbo.Customers c
+-- INNER JOIN dbo.Employees e
+--	ON c.salesRepEmployeeNumber = e.employeeNumber
+--ORDER BY c.customerName;
+
+--3f) Report total payments for Atelier graphique.
+--SELECT c.customerName, SUM(p.amount) as Total_Payments 
+--FROM dbo.Payments p
+--	INNER JOIN dbo.Customers c
+--		on p.customerNumber = c.customerNumber
+--WHERE c.customerName = 'Atelier graphique'
+--GROUP BY c.customerName;
+
+--3g) Report the total payments by date
+--SELECT p.paymentDate, SUM(p.amount) as Total_Payments
+--FROM dbo.Payments p
+--GROUP BY p.paymentDate
+--ORDER BY p.paymentDate;
+
+--3h) Report the products that have not been sold.
+--SELECT DISTINCT p.productName
+--FROM dbo.Products p
+--	LEFT JOIN dbo.OrderDetails od
+--		on p.productCode = od.productCode
+--WHERE od.productCode IS NULL
+--ORDER BY p.productName;
+
+--3i) List the amount paid by each customer.
+--SELECT c.customerName, sum(p.amount) as Amount_Paid
+--FROM dbo.Customers c
+--	INNER JOIN dbo.Payments p
+--		on c.customerNumber = p.customerNumber
+--GROUP BY c.customerName;
+
+--3j) List products sold by order date.
+--SELECT DISTINCT o.orderdate, p.productName
+--FROM dbo.Products p
+--	INNER JOIN dbo.OrderDetails od
+--		on p.productCode = od.productCode
+--	INNER JOIN dbo.Orders o
+--		on od.orderNumber = o.orderNumber
+--ORDER BY o.orderDate;
+
+--3k) List the order dates in descending order for orders for the 1940 Ford Pickup Truck.
+--SELECT DISTINCT o.orderNumber, o.orderdate
+--FROM dbo.Products p
+--	INNER JOIN dbo.OrderDetails od
+--		on p.productCode = od.productCode
+--	INNER JOIN dbo.Orders o
+--		on od.orderNumber = o.orderNumber
+--WHERE p.productName = '1940 Ford Pickup Truck'
+--ORDER BY o.orderDate desc;
+
+--3l) List the names of customers and their corresponding order number where a particular order from that customer has a value greater than $25,000?
+--WITH Customer_Orders_CTE 
+--AS (
+--	SELECT c.customerName, o.orderNumber, SUM(od.quantityOrdered * od.priceEach) as OrderValue
+--	FROM  dbo.Orders o
+--		INNER JOIN dbo.OrderDetails od
+--			on o.orderNumber = od.orderNumber
+--		INNER JOIN dbo.Customers c
+--			on o.customerNumber = c.customerNumber
+--	GROUP BY c.customerName, o.orderNumber)
+--SELECT customerName, orderNumber, OrderValue
+--FROM Customer_Orders_CTE
+--WHERE OrderValue > 25000
+--ORDER BY customerName, orderNumber;
+
+--3m) Compute the commission for each sales representative, assuming the commission is 5% of the value of an order. Sort by employee last name and first name.
+--WITH Employee_Orders_CTE(FirstName, LastName, Commision_Per_Order) 
+--AS (
+--	SELECT e.lastName, e.firstName, 
+--		(SUM(od.priceEach *od.quantityOrdered)*.05)
+--	FROM  dbo.OrderDetails as od
+--		INNER JOIN dbo.Orders as o 
+--			on od.orderNumber = o.orderNumber
+--		INNER JOIN dbo.Customers as c 
+--			on c.customerNumber = o.customerNumber
+--		INNER JOIN dbo.Employees as e 
+--			on c.salesRepEmployeeNumber = e.employeeNumber
+--GROUP BY o.ordernumber, e.employeeNumber, e.lastName, e.firstName)
+
+--SELECT LastName, FirstName, SUM(Commision_Per_Order) as Total_Commision
+--FROM Employee_Orders_CTE
+--GROUP BY LastName, FirstName 
+--ORDER BY LastName,FirstName;
+
+--3n) What is the difference in days between the most recent and oldest order date in the Orders file?
+--SELECT DATEDIFF(DAY, MIN(o.orderDate), MAX(o.orderDate)) as Elapsed_Days
+--FROM dbo.Orders o;
+
+--3o) Compute the average time between order date and ship date for each customer ordered by the largest difference.
+--WITH Customer_Orders_CTE 
+--AS (
+--	SELECT DISTINCT c.customerName, o.orderNumber, DATEDIFF(DAY, o.orderdate, o.shippedDate ) as Elapsed_Shipped
+--	FROM  dbo.Orders o
+--		INNER JOIN dbo.Customers c
+--			on o.customerNumber = c.customerNumber
+--	WHERE orderStatus = 'Shipped')
+
+--SELECT customerName, AVG(Elapsed_Shipped) as Avg_Shipping_Days
+--FROM Customer_Orders_CTE
+--GROUP BY customerName
+--ORDER BY Avg_Shipping_Days desc;

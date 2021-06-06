@@ -1,0 +1,52 @@
+
+
+--QUESTION 1: Who are our customers in North America?
+--select country, contactName, companyName
+--from dbo.customers
+--where country in ('USA', 'Canada', 'Mexico')
+
+--QUESTION 2: What orders were placed in April, 1998?
+--select orderID, orderDate
+--from dbo.orders
+--where year(orderDate) = 1998 and month(orderDate) = 4
+--order by orderDate
+
+--QUESTION 3: What sauces do we sell?
+--select * from Products where CategoryID = 2 and ProductName like N'%sauce%'
+
+--QUESTION 4: You sell some kind of dried fruit that i liked very much. What is its name?
+--select * from products where CategoryID = 7 and ProductName like N'%dried%'
+
+--QUESTION 5: What employees ship products to Germany in December?
+--select distinct EmployeeID 
+--from dbo.Orders
+--where ShipCountry like 'Germany' and month(ShippedDate) = 12
+
+--QUESTION 6: We have an issue with product 19. I need to know the total amount and the net amount of all orders for product 19 where the customer took a discount. 
+--This query requires a join between the tables, we will explore this in class.
+--select sum(Quantity * UnitPrice) as totalAmount, sum(Quantity * UnitPrice * (1-Discount)) as netAmount
+--from [Order Details] od
+--where ProductID = 19 and Discount > 0
+
+--QUESTION 7: I need a list of employees by title, first name, and last name, with the employee’s position under their names, and a line separating each employee.
+--declare @text nvarchar(100)
+--set @text = '' + char(10)
+--select (TitleofCourtesy) + (FirstName) + (LastName) + char(10) + (title) + char(10) + '=========================='
+--from Employees
+
+--QUESTION 8: I need a list of our customers and the first name only of the customer representative.
+--select CompanyName
+--	, substring(ContactName, 1, charindex(' ', contactname)-1) as firstname
+--from dbo.Customers
+
+--QUESTION 9: Give me a list of our customer contacts alphabetically by last name.
+--select substring(ContactName, 1, charindex(' ', ContactName)-1) Firstname, substring(contactName, charindex(' ', contactname)+1, len(contactName)) Lastname
+--from customers
+--order by Lastname
+--or
+--select ContactName
+--from customers
+--order by right(ContactName, len(ContactName) - charindex(' ', ContactName))
+
+--Question 10: How many days old are you today?
+--select DATEDIFF(dd,'19830313', getdate()) as DaysOld

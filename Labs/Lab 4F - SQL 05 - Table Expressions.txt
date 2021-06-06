@@ -1,0 +1,104 @@
+--1) List the number of orders by each customer who lives in the United States using a CTE. Sort from highest to lowest.
+
+--WITH	 USAcustomers(CustomerID, CompanyName, ordertotals) AS (
+--SELECT c.CustomerID, c.CompanyName, COUNT(OrderID)
+--FROM Orders o
+--inner join Customers c
+--	on c.CustomerID = o.CustomerID
+--WHERE Country = 'USA'
+--GROUP BY c.CustomerID, c.CompanyName)
+--SELECT *
+--FROM USAcustomers
+--ORDER BY ordertotals
+--DESC
+
+
+
+--2) List the product name and the number of each product from a German supplier sold to a customer in Germany using a CTE. Sort from highest to lowest.
+
+--GO
+--WITH cte_ger AS(
+--SELECT p.ProductName, od.quantity AS orderCount
+--FROM Products p
+--	INNER JOIN [Order Details] od
+--		ON p.ProductID = od.ProductID
+--	INNER JOIN Suppliers s
+--		ON s.SupplierID = p.SupplierID
+--	INNER JOIN Orders o
+--		ON o.OrderID = od.OrderID
+--	INNER JOIN Customers c
+--		ON c.CustomerID = o.CustomerID
+--WHERE s.Country = 'Germany' AND c.Country = 'Germany')
+--SELECT ProductName, SUM(orderCount) AS orderCount
+--FROM cte_ger
+--GROUP BY ProductName
+--ORDER BY orderCount
+--DESC
+
+
+--3) Prepare an employee report showing the name of each employee, the number of employees they supervise, and the name of their supervisor using a CTE. 
+--   Sort by the number of employees supervised.
+
+--with cte as
+--(
+--	select e.employeeid, e.firstname, e.lastname, e.reportsto
+--	from dbo.employees e
+--	where e.ReportsTo is null
+
+--	union all
+
+--	select e.employeeid, e.firstname, e.lastname, e.reportsto
+--	from dbo.employees e
+--	inner join cte c
+--		on c.EmployeeID = e.ReportsTo
+--)
+--select e.firstname + ' ' + e.lastname, isnull(totalEmployees, 0), isnull(e.reportsto, 0) as reportsto, subquery2.employeename as supervisor
+--from cte e
+--	left outer join (select count(employeeid) as totalEmployees, ReportsTo
+--		from cte
+--		group by ReportsTo) as subquery
+--		on subquery.ReportsTo = e.EmployeeID
+--	left outer join(select cte.firstname + ' ' + lastname as employeename, EmployeeID from cte) as subquery2
+--		on subquery2.EmployeeID = e.ReportsTo
+
+
+--4) One purpose of views is to denormalize databases for the purpose of efficiency, both machine efficiency and programmer efficiency.
+--   Creating denormalized objects can turn complex queries into simple ones.
+
+--4A) Create a query that returns every distinct customer/employee pair.
+--select distinct customerid, employeeID
+--from dbo.orders
+
+--4B) Use that query to write another query turning the customerid, customername, and customercontact, and the employeeid, firstname, and lastname.
+--SELECT DISTINCT c.customerID, e.employeeID, c.CompanyName, c.ContactName, e.FirstName, e.LastName 
+--FROM customers c 
+--	JOIN orders o 
+--		ON c.customerid = o.customerid 
+--	JOIN employees e 
+--		ON o.employeeid = e.employeeid;
+
+--4C) Make sure you drop any view that might exist.
+--DROP VIEW IF EXISTS dbo.distinctCustomerEmployeePair;
+
+--4D) Create a view based on your query
+--CREATE VIEW dbo.distinctCustomerEmployeePair AS
+--SELECT DISTINCT c.customerID, e.employeeID, c.CompanyName, c.ContactName, e.FirstName, e.LastName 
+--FROM customers c 
+--	JOIN orders o 
+--		ON c.customerid = o.customerid 
+--	JOIN employees e 
+--		ON o.employeeid = e.employeeid;
+
+--4E) Write a report listing all customers served by employee 7, Robert King.
+--SELECT *
+--FROM dbo.distinctCustomerEmployeePair
+--WHERE employeeID LIKE '7'
+
+--4F) Write a report listing all employees who served customer CHOPS, Chop-suey Chinese.
+--SELECT *
+--FROM dbo.distinctCustomerEmployeePair
+--WHERE customerID LIKE 'CHOPS'
+
+--4G) Drop the view.
+--DROP VIEW IF EXISTS dbo.distinctCustomerEmployeePair
+

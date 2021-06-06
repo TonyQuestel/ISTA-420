@@ -1,0 +1,54 @@
+--1) Create a report that shows the product name and supplier ID for all products supplied by exotic liquids, Grandma Kelly's Homestead, and 
+--Tokyo Traders.
+--SELECT p.ProductName, p.SupplierID
+--FROM dbo.Products p
+--WHERE p.SupplierID 
+--	IN (SELECT s.SupplierID
+--		FROM Suppliers s
+--		WHERE s.CompanyName
+--		IN ('Exotic Liquids', 'Grandma Kelly''s Homestead', 'Tokyo Traders'));
+
+--2) Create a report that shows all products by name that are in the seafood category.
+--SELECT p.ProductName
+--FROM Products p 
+--WHERE p.CategoryID
+--	IN (SELECT c.CategoryID
+--		FROM Categories c
+--		WHERE c.CategoryName
+--		LIKE 'Seafood')
+
+--3) Create a report that shows all companies by name that sells products in CategoryID 8.
+--SELECT CompanyName
+--FROM Suppliers
+--WHERE SupplierID
+--IN (SELECT SupplierID
+--	FROM Products
+--	WHERE CategoryID = 8)
+
+--4) Create a report that shows all companies by name that sell products in the seafood category.
+--SELECT CompanyName
+--FROM Suppliers
+--WHERE SupplierID
+--	IN (SELECT SupplierID
+--		FROM Products
+--		WHERE CategoryID = (SELECT CategoryID
+--							FROM Categories
+--							WHERE CategoryName = 'Seafood'))
+
+--5) Create a report that lists the ten most expensive products
+--SELECT Top 10 p.UnitPrice, p.ProductName
+--FROM Products p
+--WHERE p.ProductID
+--	IN (SELECT o.ProductID
+--		FROM [Order Details] o
+--		GROUP BY ProductID)
+--ORDER BY p.UnitPrice DESC
+
+
+--6) Create a report that shows the date of the last order by all employees. 
+--SELECT e. FirstName, e.LastName, e.EmployeeID,
+--LastOrderDate = 
+--(SELECT MAX(o.orderdate)
+--FROM Orders o
+--WHERE o.EmployeeID = e.employeeID)
+--FROM Employees e

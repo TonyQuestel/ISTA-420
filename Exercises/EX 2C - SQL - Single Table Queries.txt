@@ -1,0 +1,11 @@
+--Exercise 3
+--select empid, firstname, lastname
+--from hr.Employees
+--where lastname like '%e%e%';
+
+--Exercise 4
+--select orderid, sum(qty * unitprice) as totalvalue
+--from sales.OrderDetails
+--group by orderid
+--having sum(qty * unitprice) > 10000
+--order  by totalvalue desc;

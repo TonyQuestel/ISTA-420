@@ -1,0 +1,38 @@
+--1) Using the customers table and the orders table:
+--A. Print a report of all the customers that have placed an order, the report should show the customers.customerid and the orders.customerid ordered by orders.customerid
+--B. Print a report of all the customer ids that have not placed an order, the report should show a null value for the orders.customerid, and the customers.customerid
+--1A:
+--SELECT c.CustomerID
+--FROM Customers c
+--LEFT JOIN Orders o
+--ON c.CustomerID = o.CustomerId
+--WHERE o.CustomerId IS not NULL
+--order by o.CustomerID
+
+--1B:
+--SELECT c.CustomerID
+--FROM Customers c
+--left JOIN Orders o
+--ON c.CustomerID = o.CustomerId
+--WHERE o.CustomerId IS NULL
+
+--2) Create a report that list the 10 most expensive products that have been purchased.
+--SELECT top (10) p.ProductID, p.ProductName, p.UnitPrice
+--FROM dbo.products p
+--ORDER BY p.UnitPrice
+--DESC 
+
+--3) Create a report that shows the date of the last order by all employees
+--SELECT e.EmployeeID, MAX(o.orderID) AS OrderID
+--FROM Employees e JOIN Orders o ON e.EmployeeID = o.CustomerID
+--group by e.EmployeeID
+--where o.OrderDate = MAX(o.OrderDate)
+
+
+--4) Create a line-item report that contains a line for each product that has been ordered with the following columns:
+--The order ID, the Product ID, the Unit Price, the Quantity sold, the line-item price, and the percent of that line-item
+--constitutes of the total amount of the specific order.
+--SELECT orderid, productid, unitprice, quantity, (quantity * unitprice) AS LineTotal, ((unitprice * quantity) / (SELECT SUM(o2.unitprice * o2.quantity)
+--FROM dbo.[Order Details] AS o2 WHERE o2.OrderID = o1.OrderID) * 100) as PercentOfTotal
+--FROM dbo.[Order Details] AS o1
+--ORDER BY OrderID

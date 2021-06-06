@@ -1,0 +1,9 @@
+--Exercise 1
+--select orderid, orderdate, custid, empid
+--from sales.Orders
+--where orderdate >= '20150601' and orderdate < '20150701';
+
+--Exercise 2
+--select orderid, orderdate, custid, empid
+--from Sales.Orders
+--where orderdate = eomonth(orderdate);

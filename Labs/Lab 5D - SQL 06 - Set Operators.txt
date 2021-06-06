@@ -1,0 +1,46 @@
+--1) Create a list of every country where we have either a customer or a supplier.
+--SELECT DISTINCT Country
+--FROM Customers
+--UNION
+--SELECT DISTINCT country
+--FROM Suppliers
+
+--2) Create a list of every city and country where we have either a customer or a supplier
+--SELECT City, Country
+--FROM Customers
+--UNION ALL
+--SELECT City, Country
+--FROM Suppliers
+--ORDER BY Country, City
+
+--3) Create a list of every country where we have both a customer and a supplier
+--SELECT Country
+--FROM Customers
+--INTERSECT
+--SELECT Country
+--FROM Suppliers
+--ORDER BY Country
+
+--4) Create a list of every city and country where we have both a customer and a supplier
+--SELECT city, country 
+--FROM customers
+--INTERSECT
+--SELECT city, country 
+--FROM suppliers
+--ORDER BY country, city;
+
+--5) Create a list of every country where we have customers but not suppliers
+--SELECT country 
+--FROM customers
+--EXCEPT
+--SELECT country 
+--FROM Suppliers
+--ORDER BY Country;
+
+--6) Create a list of every country where we have suppliers but not customers
+--SELECT Country 
+--FROM Suppliers
+--EXCEPT
+--SELECT Country 
+--FROM Customers
+--ORDER BY Country;

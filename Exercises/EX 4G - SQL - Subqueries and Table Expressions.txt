@@ -1,0 +1,100 @@
+--1) Use a derived table to build a query that returns the number of distinct products per year that each customer ordered. 
+--Use internal aliasing. Use a variable to set the customer number. For example, if the customer ID is 1234, the query should 
+--report the number of distinct products ordered by customer 1234 for the years 2014, 2015, and 2016.
+
+--with cte(productname, customerid, quantity, orderdate) as
+--(
+--select p.productname, o.custid, od.qty, o.orderdate
+--from sales.Orders o
+--	inner join sales.OrderDetails od
+--		on od.orderid = o.orderid
+--	inner join Production.Products p
+--		on p.productid = od.productid
+--)
+
+--select productname, sum(quantity) as quantityordered, customerid
+--from cte
+--where customerid = 88 and year(orderdate) between 2014 and 2016
+--group by productname, customerid
+
+
+--2) Use multiple common table expressions to build a query that returns the number of distinct products per year that each 
+--country's customers ordered. Use external aliasing. Use a variable to set the country name. For example, if the country name 
+--is "France", the query should report the number of distinct products ordered by French customers for the years 2014, 2015, and 2016.
+
+
+--WITH cte_Country (OrderID, Company, OrderYear, Country, ShipCountry) AS 
+--(
+--	SELECT o.orderid, c.companyname, YEAR(o.orderdate) AS Orderdate, c.country, o.shipcountry
+--	FROM sales.Customers c
+--		INNER JOIN sales.Orders o
+--		ON c.custid = o.custid
+--),
+
+--cte_Products (OrderID, ProductName, Quantity) AS 
+--(
+--	SELECT o.orderid, p.productname, SUM(o.qty) AS Amount
+--	FROM Production.Products p
+--		INNER JOIN Sales.OrderDetails o
+--		ON p.productid = o.productid
+--    GROUP BY p.productname, o.orderid
+--)
+
+--SELECT c.Company, p.ProductName, c.Country, c.OrderYear, p.Quantity, c.ShipCountry
+--FROM cte_Country c
+--	INNER JOIN cte_Products p
+--	ON c.orderid = p.orderid
+--WHERE c.Country = 'France'
+--ORDER BY OrderYear
+
+
+--3) Create a view that shows, for each year, the total dollar amount spent by customers in each country for all the years in the database.
+--USE TSQLV4
+--GO
+--CREATE VIEW dbo.moneyspent 
+--AS
+--SELECT YEAR(o.orderdate) as year, country, SUM(od.unitprice * od.qty * (1-discount)) as TotalAmount
+--FROM Sales.OrderDetails od
+--	INNER JOIN Sales.Orders o
+--		ON o.orderid = od.orderid
+--	INNER JOIN Sales.Customers c
+--		ON o.custid = c.custid
+--GROUP BY c.country, Year(o.orderdate)
+--GO
+
+--SELECT *
+--FROM dbo.moneyspent
+--ORDER BY year, country
+
+--4) Create an inline table valued function that accepts as a parameter a country name and returns a table with the distinct products 
+--ordered by customers from that country. Products are to be identified by both product ID and product name.
+
+--I didn't understand this problem and this is all i could come up with. It doesn't run. 
+--CREATE FUNCTION [dbo].[getProducts] (@CountryName NVARCHAR)
+--RETURNS TABLE
+--with schemabinding
+--AS
+--RETURN
+-- (SELECT p.productname, p.productid
+--    FROM production.products p
+--    WHERE countryname = @CountryName
+--    ORDER BY customername
+-- );
+--GO
+
+
+--5) Use the CROSS APPLY operator to create a query showing the top three products shipped to customers in each country. Your report 
+--should contain the name of the country, the product id, the product name, and the number of products shipped to customers in that country.
+
+--This is not a 100% solution. 
+--USE northwind;
+--SELECT c.CategoryName, t2.ProductName, t2.UnitPrice
+--FROM Categories c
+--	CROSS APPLY
+--(
+--	SELECT TOP 2 p.ProductName, p.UnitPrice
+--	FROM Products p
+--	WHERE p.CategoryID = c.CategoryID
+--	ORDER BY p.UnitPrice DESC
+--) 
+--AS t2;

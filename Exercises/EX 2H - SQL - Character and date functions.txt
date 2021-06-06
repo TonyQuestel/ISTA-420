@@ -1,0 +1,11 @@
+--Question 3
+--Select o.OrderID, o.OrderDate, o.ShippedDate, datediff(dd, orderdate, shippeddate) as ShippingLagInDays
+--from dbo.Orders o
+--where o.ShippedDate is not null
+--order by OrderID, OrderDate, ShippedDate, ShippingLagInDays
+
+--Question 4
+--select datediff(yy, '19830313 00:00:00', getdate()) - 1 as Years
+--, datediff(mm,'19830313 00:00:00', getdate()) as Months
+--, datediff(ww,'19830313 00:00:00', getdate()) as Weeks
+--, datediff(dd, '19830313 00:00:00', getdate()) as Days

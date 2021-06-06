@@ -1,0 +1,54 @@
+
+
+--QUESTION 1: What are the regions?
+--select RegionDescription
+--from dbo.Region
+
+--QUESTION 2: What are the cities?
+--select distinct city
+--from dbo.customers
+
+--QUESTION 3: What are the cities in the southern region?
+--select *
+--from Territories
+--where RegionID = 4
+
+--QUESTION 4: How do you run this query?
+--select dbo.Territories.TerritoryDescription
+--from dbo.Territories
+--where RegionID = 4
+
+--QUESTION 5: How do you run this query with a table alias?
+--select t.TerritoryDescription
+--from dbo.territories t
+--where RegionID = 4
+
+--QUESTION 6: What is the contact name, telephone number, and city for each customer?
+--select ContactName, Phone, City
+--from dbo.customers
+
+--QUESTION 7: What are the products currently out of stock?
+--select ProductName
+--from dbo.Products
+--where UnitsInStock = 0 and Discontinued = 0
+
+--QUESTION 8: What are the ten products currently in stock with the least amount on hand?
+--select top (10) UnitsInStock, ProductID, ProductName
+--from Products
+--where UnitsInStock > 0 and Discontinued = 0
+--order by UnitsInStock
+
+--QUESTION 9: What are the five most expensive products in stock?
+--select top (5)
+--p.unitsinstock
+--, p.productID
+--, p.productName
+--, p.unitPrice
+--from dbo.Products p
+--where UnitsInStock > (0)
+--order by unitprice desc
+
+--QUESTION 10: How many products does Northwind have? How many customers? How many suppliers?
+--select count(*) from Products
+--select count(*) from Customers
+--select count(*) from Suppliers
